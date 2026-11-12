@@ -1,0 +1,44 @@
+---
+import { site } from '../data/site'
+
+type ConsultationType = 'inPerson' | 'online' | 'followUp'
+
+interface Props {
+  type: ConsultationType
+  description: string
+  href: string
+}
+
+const { type, description, href } = Astro.props
+const fees = site.fees
+const initial = type !== 'followUp'
+const fee = fees ? (initial ? fees.initial.amountGBP : fees.followUp.amountGBP) : null
+const duration = fees
+  ? initial
+    ? `${fees.initial.consultationMinutes.minimum}–${fees.initial.consultationMinutes.maximum} minutes`
+    : `${fees.followUp.slotMinutes} minutes`
+  : null
+const title = {
+  inPerson: 'In person',
+  online: 'Online',
+  followUp: 'Follow-up',
+}[type]
+---
+
+{fees && fee !== null && duration && (
+  <article class="consultation-card">
+    <h3>{title}</h3>
+    <p>{description}</p>
+    <p class="consultation-card-meta">
+      <span>{duration}</span>
+      <strong>
+        {new Intl.NumberFormat('en-GB', {
+          style: 'currency',
+          currency: 'GBP',
+          maximumFractionDigits: 0,
+        }).format(fee)}
+      </strong>
+    </p>
+    <a class="text-link" href={href}>Find out more</a>
+  </article>
+)}

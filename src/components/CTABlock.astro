@@ -1,0 +1,43 @@
+---
+import GPStatement from './GPStatement.astro'
+import { site } from '../data/site'
+
+interface Props {
+  id: string
+  heading: string
+  intro: string
+  includeGpStatement?: boolean
+}
+
+const { id, heading, intro, includeGpStatement = false } = Astro.props
+---
+
+<section class="cta-block" id={id} aria-labelledby={`${id}-heading`}>
+  <div class="cta-content">
+    <h2 id={`${id}-heading`}>{heading}</h2>
+    <p>{intro}</p>
+    <div class="cta-actions">
+      <a class="button button-primary" href="/book-appointment/" data-track="click_book">
+        Book a consultation
+      </a>
+      <a class="button button-secondary" href={site.phone.href} data-track="click_call">
+        Call {site.phone.display}
+      </a>
+      <a
+        class="button button-secondary"
+        href={site.whatsapp.href}
+        rel="noopener"
+        data-track="click_whatsapp"
+      >
+        WhatsApp
+      </a>
+    </div>
+    {includeGpStatement && <GPStatement />}
+    <!-- TODO(client): approve emergency signposting wording. -->
+    {site.approvals.emergencySignposting && (
+      <p class="emergency-statement">
+        In an emergency call 999. For urgent medical help that is not an emergency, call NHS 111.
+      </p>
+    )}
+  </div>
+</section>

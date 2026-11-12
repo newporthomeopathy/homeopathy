@@ -1,0 +1,69 @@
+---
+import { site } from '../data/site'
+---
+
+<footer class="site-footer">
+  <div class="site-container footer-grid">
+    <section aria-labelledby="footer-clinic">
+      <h2 id="footer-clinic">{site.name}</h2>
+      <address>{site.address.display}</address>
+      {site.openingHours && (
+        <p>
+          {site.openingHours.days.join(', ')}, {site.openingHours.opens}–{site.openingHours.closes}
+        </p>
+      )}
+    </section>
+
+    <section aria-labelledby="footer-contact">
+      <h2 id="footer-contact">Contact</h2>
+      <p>
+        <a href={site.phone.href} data-track="click_call">{site.phone.internationalDisplay}</a>
+      </p>
+      {site.email && (
+        <p>
+          <a href={`mailto:${site.email}`} data-track="click_email">{site.email}</a>
+        </p>
+      )}
+      <p>
+        <a href={site.whatsapp.href} rel="noopener" data-track="click_whatsapp">WhatsApp</a>
+      </p>
+    </section>
+
+    <nav aria-label="Footer navigation">
+      <h2>Explore</h2>
+      <ul class="footer-links">
+        <li><a href="/homeopathy-consultations/">Consultations</a></li>
+        <li><a href="/consultation-fees/">Fees</a></li>
+        <li><a href="/about-kavita-batchu/">About</a></li>
+        <li><a href="/frequently-asked-questions/">FAQs</a></li>
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href="/privacy-policy/">Privacy policy</a></li>
+        <li><a href="/cookie-policy/">Cookie policy</a></li>
+        <li><a href="/booking-terms/">Booking terms</a></li>
+      </ul>
+      {site.socialProfiles && (
+        <ul class="footer-socials">
+          <li>
+            <a href={site.socialProfiles.facebook} target="_blank" rel="noopener">Facebook</a>
+          </li>
+          <li>
+            <a href={site.socialProfiles.instagram} target="_blank" rel="noopener">Instagram</a>
+          </li>
+        </ul>
+      )}
+    </nav>
+  </div>
+
+  <div class="site-container footer-bottom">
+    <p class="footer-gp">Homeopathy is a complementary therapy.</p>
+    <p class="footer-copyright">
+      &copy; <span data-current-year>{new Date().getFullYear()}</span> {site.name}.
+      {site.developerCredit && ` Designed & Developed by ${site.developerCredit}.`}
+    </p>
+  </div>
+</footer>
+
+<script>
+  const currentYear = document.querySelector<HTMLElement>('[data-current-year]')
+  if (currentYear) currentYear.textContent = String(new Date().getFullYear())
+</script>

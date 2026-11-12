@@ -1,0 +1,14 @@
+---
+import { site } from '../data/site'
+---
+
+{site.faqs && site.faqs.length > 0 && (
+  <div class="faq-list">
+    {site.faqs.map((faq) => (
+      <details>
+        <summary>{faq.question}</summary>
+        <p>{faq.answer}</p>
+      </details>
+    ))}
+  </div>
+)}

@@ -28,6 +28,13 @@ export type FrequentlyAskedQuestion = {
   answer: string
 }
 
+export type ImageAsset = {
+  src: string
+  width: number
+  height: number
+  alt: string
+}
+
 export type PendingClientInputs = {
   email: string | null
   bookingInbox: string | null
@@ -58,10 +65,10 @@ export type PendingClientInputs = {
     longitude: number
   } | null
   photos: {
-    hero: string
-    practitioner: string
-    clinic: string
-    openGraph: string
+    hero: ImageAsset
+    practitioner: ImageAsset
+    clinic: ImageAsset
+    openGraph: ImageAsset
   } | null
   favicons: {
     ico: string
@@ -69,7 +76,7 @@ export type PendingClientInputs = {
     appleTouchIcon: string
     manifest: string
   } | null
-  logoSource: string | null
+  logoSource: ImageAsset | null
   parkingDetails: string | null
   stepFreeAccess: boolean | null
   developerCredit: string | null

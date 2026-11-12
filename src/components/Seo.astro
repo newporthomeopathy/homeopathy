@@ -13,7 +13,7 @@ interface Props {
 const { title, description, path, noindex = false, ogType = 'website' } = Astro.props
 const pagePath = path === '/' ? '/' : `/${path.replace(/^\/+|\/+$/g, '')}/`
 const canonical = new URL(pagePath, `${site.origin}/`).href
-const ogImage = Astro.props.ogImage ?? site.photos?.openGraph ?? null
+const ogImage = Astro.props.ogImage ?? site.photos?.openGraph.src ?? null
 const absoluteAssetUrl = (asset: string) => new URL(asset, `${site.origin}/`).href
 const favicons = site.favicons
 ---

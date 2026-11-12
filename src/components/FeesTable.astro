@@ -1,0 +1,42 @@
+---
+import { site } from '../data/site'
+
+const fees = site.fees
+const formatGBP = (amount: number) =>
+  new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: 'GBP',
+    maximumFractionDigits: 0,
+  }).format(amount)
+---
+
+{fees && (
+  <div class="fees-table-wrap">
+    <table class="fees-table">
+      <caption>Consultation fees and durations</caption>
+      <thead>
+        <tr>
+          <th scope="col">Consultation</th>
+          <th scope="col">Duration</th>
+          <th scope="col">Fee</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Initial consultation</th>
+          <td>
+            {fees.initial.consultationMinutes.minimum}–{fees.initial.consultationMinutes.maximum}
+            {' '}minutes
+          </td>
+          <td>{formatGBP(fees.initial.amountGBP)}</td>
+        </tr>
+        <tr>
+          <th scope="row">Follow-up consultation</th>
+          <td>{fees.followUp.slotMinutes} minutes</td>
+          <td>{formatGBP(fees.followUp.amountGBP)}</td>
+        </tr>
+      </tbody>
+    </table>
+    {site.paymentMethods && <p>Payment methods: {site.paymentMethods.join(', ')}.</p>}
+  </div>
+)}

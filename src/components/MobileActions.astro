@@ -1,0 +1,9 @@
+---
+import { site } from '../data/site'
+---
+
+<nav class="mobile-actions" aria-label="Quick contact">
+  <a href={site.phone.href} data-track="click_call">Call</a>
+  <a href={site.whatsapp.shortHref} rel="noopener" data-track="click_whatsapp">WhatsApp</a>
+  <a href="/book-appointment/" data-track="click_book">Book</a>
+</nav>

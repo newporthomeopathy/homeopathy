@@ -1,0 +1,24 @@
+---
+import { site } from '../data/site'
+---
+
+<div class="topbar">
+  <div class="site-container topbar-inner">
+    <a class="topbar-link" href={site.phone.href} data-track="click_call">
+      Call {site.phone.display}
+    </a>
+    <a class="topbar-link" href={site.whatsapp.href} rel="noopener" data-track="click_whatsapp">
+      WhatsApp
+    </a>
+    {site.email && (
+      <a class="topbar-link" href={`mailto:${site.email}`} data-track="click_email">
+        {site.email}
+      </a>
+    )}
+    {site.openingHours && (
+      <span class="topbar-hours">
+        {site.openingHours.days.join(', ')} {site.openingHours.opens}–{site.openingHours.closes}
+      </span>
+    )}
+  </div>
+</div>

@@ -59,8 +59,10 @@ const clinic: JsonLdRecord = {
 }
 
 if (site.email) clinic.email = site.email
-if (site.logoSource) clinic.logo = new URL(site.logoSource, `${site.origin}/`).href
-if (site.photos?.openGraph) clinic.image = new URL(site.photos.openGraph, `${site.origin}/`).href
+if (site.logoSource) clinic.logo = new URL(site.logoSource.src, `${site.origin}/`).href
+if (site.photos?.openGraph) {
+  clinic.image = new URL(site.photos.openGraph.src, `${site.origin}/`).href
+}
 if (site.fees) {
   const amounts = [site.fees.initial.amountGBP, site.fees.followUp.amountGBP]
   clinic.priceRange = `£${Math.min(...amounts)}–£${Math.max(...amounts)}`
@@ -122,7 +124,7 @@ if (person) {
     }
   }
   if (site.photos?.practitioner) {
-    practitioner.image = new URL(site.photos.practitioner, `${site.origin}/`).href
+    practitioner.image = new URL(site.photos.practitioner.src, `${site.origin}/`).href
   }
   if (site.practitioner.professionalMembership) {
     practitioner.memberOf = {
