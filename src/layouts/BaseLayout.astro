@@ -1,0 +1,43 @@
+---
+import Seo from '../components/Seo.astro'
+import JsonLd from '../components/JsonLd.astro'
+import '../styles/global.css'
+
+interface Props {
+  title: string
+  description: string
+  path: string
+  noindex?: boolean
+  ogType?: 'website' | 'article'
+  ogImage?: string | null
+}
+
+const { title, description, path, noindex, ogType, ogImage } = Astro.props
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <Seo
+      title={title}
+      description={description}
+      path={path}
+      noindex={noindex}
+      ogType={ogType}
+      ogImage={ogImage}
+    />
+    <JsonLd />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to main content
+    </a>
+    <slot name="header" />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <slot name="footer" />
+    <slot name="scripts" />
+  </body>
+</html>

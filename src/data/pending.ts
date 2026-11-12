@@ -34,6 +34,7 @@ export type PendingClientInputs = {
   bookingTool: string | null
   preferredHost: 'apex' | 'www' | null
   approvedPractitionerTitle: string | null
+  practitionerQualification: string | null
   practitionerBiography: string | null
   professionalMembership: {
     bodyName: string
@@ -62,6 +63,12 @@ export type PendingClientInputs = {
     clinic: string
     openGraph: string
   } | null
+  favicons: {
+    ico: string
+    svg: string
+    appleTouchIcon: string
+    manifest: string
+  } | null
   logoSource: string | null
   parkingDetails: string | null
   stepFreeAccess: boolean | null
@@ -80,6 +87,7 @@ export const pending: PendingClientInputs = {
   bookingTool: null,
   preferredHost: null,
   approvedPractitionerTitle: null,
+  practitionerQualification: null,
   practitionerBiography: null,
   professionalMembership: null,
   fees: null,
@@ -91,6 +99,7 @@ export const pending: PendingClientInputs = {
   googleBusinessProfile: null,
   mapCoordinates: null,
   photos: null,
+  favicons: null,
   logoSource: null,
   parkingDetails: null,
   stepFreeAccess: null,

@@ -1,19 +1,13 @@
 ---
-const title = 'Newport Homeopathy Clinic — Phase 2 preview'
+import BaseLayout from '../layouts/BaseLayout.astro'
 ---
 
-<!doctype html>
-<html lang="en-GB">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex, nofollow" />
-    <title>{title}</title>
-  </head>
-  <body>
-    <main>
-      <h1>Phase 2 implementation preview</h1>
-      <p>This internal preview is not the live website.</p>
-    </main>
-  </body>
-</html>
+<BaseLayout
+  title="Newport Homeopathy Clinic — Phase 2 preview"
+  description="Internal development preview. Not for publication."
+  path="/"
+  noindex
+>
+  <h1>Phase 2 implementation preview</h1>
+  <p>This internal preview is not the live website.</p>
+</BaseLayout>

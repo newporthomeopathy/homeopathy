@@ -1,0 +1,44 @@
+---
+import { site } from '../data/site'
+
+interface Props {
+  title: string
+  description: string
+  path: string
+  noindex?: boolean
+  ogType?: 'website' | 'article'
+  ogImage?: string | null
+}
+
+const { title, description, path, noindex = false, ogType = 'website' } = Astro.props
+const pagePath = path === '/' ? '/' : `/${path.replace(/^\/+|\/+$/g, '')}/`
+const canonical = new URL(pagePath, `${site.origin}/`).href
+const ogImage = Astro.props.ogImage ?? site.photos?.openGraph ?? null
+const absoluteAssetUrl = (asset: string) => new URL(asset, `${site.origin}/`).href
+const favicons = site.favicons
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#ffffff" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex" />}
+
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content="en_GB" />
+{ogImage && <meta property="og:image" content={absoluteAssetUrl(ogImage)} />}
+<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{ogImage && <meta name="twitter:image" content={absoluteAssetUrl(ogImage)} />}
+
+{favicons && <link rel="icon" href={favicons.ico} sizes="32x32" />}
+{favicons && <link rel="icon" href={favicons.svg} type="image/svg+xml" />}
+{favicons && <link rel="apple-touch-icon" href={favicons.appleTouchIcon} />}
+{favicons && <link rel="manifest" href={favicons.manifest} />}

@@ -1,0 +1,225 @@
+---
+import { site } from '../data/site'
+
+type JsonLdRecord = Record<string, unknown>
+
+interface Breadcrumb {
+  name: string
+  path: string
+}
+
+interface BlogPost {
+  title: string
+  description: string
+  path: string
+  datePublished: string
+  dateModified: string
+  image?: string | null
+}
+
+interface Props {
+  siteWide?: boolean
+  person?: boolean
+  service?: 'inPerson' | 'online'
+  breadcrumbs?: Breadcrumb[]
+  includeFaqs?: boolean
+  blogPost?: BlogPost
+}
+
+const {
+  siteWide = true,
+  person = false,
+  service,
+  breadcrumbs,
+  includeFaqs = false,
+  blogPost,
+} = Astro.props
+const clinicId = `${site.origin}/#clinic`
+const websiteId = `${site.origin}/#website`
+const personId = `${site.origin}/about-kavita-batchu/#person`
+const graph: JsonLdRecord[] = []
+
+const clinic: JsonLdRecord = {
+  '@type': 'HealthAndBeautyBusiness',
+  '@id': clinicId,
+  name: site.name,
+  url: `${site.origin}/`,
+  telephone: site.phone.internationalDisplay,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.streetAddress,
+    addressLocality: site.address.addressLocality,
+    addressRegion: site.address.addressRegion,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.addressCountry,
+  },
+  currenciesAccepted: 'GBP',
+  areaServed: site.areasServed,
+  employee: { '@id': personId },
+}
+
+if (site.email) clinic.email = site.email
+if (site.logoSource) clinic.logo = new URL(site.logoSource, `${site.origin}/`).href
+if (site.photos?.openGraph) clinic.image = new URL(site.photos.openGraph, `${site.origin}/`).href
+if (site.fees) {
+  const amounts = [site.fees.initial.amountGBP, site.fees.followUp.amountGBP]
+  clinic.priceRange = `£${Math.min(...amounts)}–£${Math.max(...amounts)}`
+}
+if (site.paymentMethods) clinic.paymentAccepted = site.paymentMethods.join(', ')
+if (site.mapCoordinates) {
+  clinic.geo = {
+    '@type': 'GeoCoordinates',
+    latitude: site.mapCoordinates.latitude,
+    longitude: site.mapCoordinates.longitude,
+  }
+}
+if (site.googleBusinessProfile) clinic.hasMap = site.googleBusinessProfile.url
+if (site.openingHours) {
+  clinic.openingHoursSpecification = [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: site.openingHours.days,
+      opens: site.openingHours.opens,
+      closes: site.openingHours.closes,
+    },
+  ]
+}
+
+const sameAs = [
+  site.googleBusinessProfile?.url,
+  site.socialProfiles?.facebook,
+  site.socialProfiles?.instagram,
+  site.practitioner.professionalMembership?.registerUrl,
+].filter((url): url is string => Boolean(url))
+if (sameAs.length > 0) clinic.sameAs = sameAs
+
+if (siteWide) {
+  graph.push(clinic, {
+    '@type': 'WebSite',
+    '@id': websiteId,
+    url: `${site.origin}/`,
+    name: site.name,
+    inLanguage: site.locale,
+    publisher: { '@id': clinicId },
+  })
+}
+
+if (person) {
+  const practitioner: JsonLdRecord = {
+    '@type': 'Person',
+    '@id': personId,
+    name: site.practitioner.name,
+    url: `${site.origin}/about-kavita-batchu/`,
+    worksFor: { '@id': clinicId },
+  }
+
+  if (site.practitioner.title) practitioner.jobTitle = site.practitioner.title
+  if (site.practitioner.qualification) {
+    practitioner.hasCredential = {
+      '@type': 'EducationalOccupationalCredential',
+      credentialCategory: 'degree',
+      name: site.practitioner.qualification,
+    }
+  }
+  if (site.photos?.practitioner) {
+    practitioner.image = new URL(site.photos.practitioner, `${site.origin}/`).href
+  }
+  if (site.practitioner.professionalMembership) {
+    practitioner.memberOf = {
+      '@type': 'Organization',
+      name: site.practitioner.professionalMembership.bodyName,
+      url: site.practitioner.professionalMembership.registerUrl,
+    }
+    practitioner.sameAs = [site.practitioner.professionalMembership.registerUrl]
+  }
+  graph.push(practitioner)
+}
+
+if (service) {
+  const isOnline = service === 'online'
+  const serviceRecord: JsonLdRecord = {
+    '@type': 'Service',
+    '@id': `${site.origin}/${isOnline ? 'online-homeopathy-consultation' : 'homeopathy-consultations'}/#service`,
+    name: `Homeopathy consultation (${isOnline ? 'online' : 'in person'})`,
+    serviceType: 'Homeopathy consultation',
+    provider: { '@id': clinicId },
+    areaServed: isOnline ? 'United Kingdom' : 'Shropshire',
+  }
+
+  if (isOnline && site.onlineConsultationFormat) {
+    serviceRecord.availableChannel = {
+      '@type': 'ServiceChannel',
+      serviceLocation: {
+        '@type': 'VirtualLocation',
+        name: site.onlineConsultationFormat,
+      },
+    }
+  }
+  if (site.fees) {
+    serviceRecord.offers = [
+      {
+        '@type': 'Offer',
+        name: `Initial consultation (${site.fees.initial.consultationMinutes.minimum}–${site.fees.initial.consultationMinutes.maximum} minutes)`,
+        price: site.fees.initial.amountGBP.toFixed(2),
+        priceCurrency: 'GBP',
+      },
+      {
+        '@type': 'Offer',
+        name: 'Follow-up consultation',
+        price: site.fees.followUp.amountGBP.toFixed(2),
+        priceCurrency: 'GBP',
+      },
+    ]
+  }
+  graph.push(serviceRecord)
+}
+
+if (breadcrumbs && breadcrumbs.length > 0) {
+  graph.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((breadcrumb, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: breadcrumb.name,
+      item: new URL(breadcrumb.path, `${site.origin}/`).href,
+    })),
+  })
+}
+
+if (includeFaqs && site.faqs && site.faqs.length > 0) {
+  graph.push({
+    '@type': 'FAQPage',
+    mainEntity: site.faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  })
+}
+
+if (blogPost) {
+  const article: JsonLdRecord = {
+    '@type': 'BlogPosting',
+    headline: blogPost.title,
+    description: blogPost.description,
+    datePublished: blogPost.datePublished,
+    dateModified: blogPost.dateModified,
+    author: { '@id': personId },
+    publisher: { '@id': clinicId },
+    mainEntityOfPage: new URL(blogPost.path, `${site.origin}/`).href,
+  }
+
+  if (blogPost.image) article.image = new URL(blogPost.image, `${site.origin}/`).href
+  graph.push(article)
+}
+
+const structuredData = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': graph,
+}).replace(/</g, '\\u003c')
+---
+
+<script type="application/ld+json" set:html={structuredData}></script>

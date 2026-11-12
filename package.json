@@ -11,8 +11,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "lint": "eslint src astro.config.mjs eslint.config.js",
-    "format:check": "prettier --check src astro.config.mjs eslint.config.js package.json tsconfig.json README.md",
+    "check:jsonld": "node scripts/check-jsonld.mjs",
+    "lint": "eslint src scripts astro.config.mjs eslint.config.js",
+    "format:check": "prettier --check src scripts astro.config.mjs eslint.config.js package.json tsconfig.json README.md",
     "astro": "astro"
   },
   "dependencies": {
@@ -21,10 +22,17 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "@eslint/js": "^9.39.5",
+    "@typescript-eslint/parser": "^8.72.2",
     "eslint": "^9.39.5",
     "eslint-plugin-astro": "^1.7.0",
+    "globals": "^17.14.0",
     "prettier": "^3.10.1",
     "prettier-plugin-astro": "^1.1.2",
     "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.1"
+    }
   }
 }

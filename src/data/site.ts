@@ -26,6 +26,7 @@ export const site = {
   practitioner: {
     name: 'Kavita Batchu',
     title: pending.approvedPractitionerTitle,
+    qualification: pending.practitionerQualification,
     biography: pending.practitionerBiography,
     professionalMembership: pending.professionalMembership,
   },
@@ -39,6 +40,7 @@ export const site = {
   googleBusinessProfile: pending.googleBusinessProfile,
   mapCoordinates: pending.mapCoordinates,
   photos: pending.photos,
+  favicons: pending.favicons,
   logoSource: pending.logoSource,
   parkingDetails: pending.parkingDetails,
   stepFreeAccess: pending.stepFreeAccess,
