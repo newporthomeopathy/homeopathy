@@ -1,9 +1,3 @@
-/**
-* Template Name: Medilab - v4.10.0
-* Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
 (function() {
   "use strict";
 
@@ -116,21 +110,30 @@
   /**
    * Mobile nav toggle
    */
+  const mobileNav = select('#navbar')
+  const mobileNavToggle = select('.mobile-nav-toggle')
+  const setMobileNavOpen = (isOpen) => {
+    if (!mobileNav || !mobileNavToggle) return
+    mobileNav.classList.toggle('navbar-mobile', isOpen)
+    mobileNavToggle.setAttribute('aria-expanded', String(isOpen))
+    mobileNavToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu')
+    const icon = mobileNavToggle.querySelector('i')
+    if (icon) {
+      icon.classList.toggle('bi-list', !isOpen)
+      icon.classList.toggle('bi-x', isOpen)
+    }
+  }
+
   on('click', '.mobile-nav-toggle', function(e) {
-    select('#navbar').classList.toggle('navbar-mobile')
-    this.classList.toggle('bi-list')
-    this.classList.toggle('bi-x')
+    setMobileNavOpen(!mobileNav.classList.contains('navbar-mobile'))
   })
 
-  /**
-   * Mobile nav dropdowns activate
-   */
-  on('click', '.navbar .dropdown > a', function(e) {
-    if (select('#navbar').classList.contains('navbar-mobile')) {
-      e.preventDefault()
-      this.nextElementSibling.classList.toggle('dropdown-active')
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && mobileNav && mobileNav.classList.contains('navbar-mobile')) {
+      setMobileNavOpen(false)
+      mobileNavToggle.focus()
     }
-  }, true)
+  })
 
   /**
    * Scrool with ofset on links with a class name .scrollto
@@ -141,10 +144,7 @@
 
       let navbar = select('#navbar')
       if (navbar.classList.contains('navbar-mobile')) {
-        navbar.classList.remove('navbar-mobile')
-        let navbarToggle = select('.mobile-nav-toggle')
-        navbarToggle.classList.toggle('bi-list')
-        navbarToggle.classList.toggle('bi-x')
+        setMobileNavOpen(false)
       }
       scrollto(this.hash)
     }
@@ -161,62 +161,9 @@
     }
   });
 
-  /**
-   * Preloader
-   */
-  let preloader = select('#preloader');
-  if (preloader) {
-    window.addEventListener('load', () => {
-      preloader.remove()
-    });
+  const currentYear = select('[data-current-year]')
+  if (currentYear) {
+    currentYear.textContent = new Date().getFullYear()
   }
-
-  /**
-   * Initiate glightbox 
-   */
-  const glightbox = GLightbox({
-    selector: '.glightbox'
-  });
-
-  /**
-   * Initiate Gallery Lightbox 
-   */
-  const galelryLightbox = GLightbox({
-    selector: '.galelry-lightbox'
-  });
-
-  /**
-   * Testimonials slider
-   */
-  new Swiper('.testimonials-slider', {
-    speed: 600,
-    loop: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false
-    },
-    slidesPerView: 'auto',
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'bullets',
-      clickable: true
-    },
-    breakpoints: {
-      320: {
-        slidesPerView: 1,
-        spaceBetween: 20
-      },
-
-      1200: {
-        slidesPerView: 2,
-        spaceBetween: 20
-      }
-    }
-  });
-
-  /**
-   * Initiate Pure Counter 
-   */
-  new PureCounter();
 
 })()
