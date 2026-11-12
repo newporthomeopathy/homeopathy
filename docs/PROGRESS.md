@@ -31,19 +31,20 @@ The homepage reflects most of the Phase 1 (Parts 1–3) changes, but is **not re
 
 ## Phase 2 scaffold
 
-| Item                             | Status      | Notes                                                                                                                                   |
-| -------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Astro project at workspace root  | Done        | Static output is explicit; the legacy site remains untouched.                                                                           |
-| TypeScript strict mode           | Done        | Uses Astro's strict tsconfig; the legacy folder is excluded from checks.                                                                |
-| Plain CSS and vendor baseline    | Done        | No CSS framework or UI library has been added to the rebuild.                                                                           |
-| Developer checks                 | Done        | Build, Astro check, ESLint, Prettier and an `npm audit` run are configured/verified.                                                    |
-| Temporary root preview           | Done        | One-H1, `en-GB`, noindex scaffold page; replace it with approved homepage content before deployment.                                    |
-| Central site and pending data    | Done        | Confirmed NAP/contact identifiers are centralized; unconfirmed business details, assets, hours, fees and approvals are typed as `null`. |
-| Base layout and global styles    | Done        | Includes `en-GB`, skip link, main landmark, visible focus and reduced-motion handling.                                                  |
-| SEO and JSON-LD components       | Done        | Canonical, Open Graph/Twitter and conditional favicon metadata; optional schemas omit unknown fields.                                   |
-| Header, footer and content pages | Not started | Next: build shared contact/navigation components, then implement pages in specification order.                                          |
+| Item                            | Status      | Notes                                                                                                                                                                         |
+| ------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Astro project at workspace root | Done        | Static output is explicit; the legacy site remains untouched.                                                                                                                 |
+| TypeScript strict mode          | Done        | Uses Astro's strict tsconfig; the legacy folder is excluded from checks.                                                                                                      |
+| Plain CSS and vendor baseline   | Done        | No CSS framework or UI library has been added to the rebuild.                                                                                                                 |
+| Developer checks                | Done        | Build, Astro check, ESLint, Prettier and an `npm audit` run are configured/verified.                                                                                          |
+| Temporary root preview          | Done        | One-H1, `en-GB`, noindex scaffold page; replace it with approved homepage content before deployment.                                                                          |
+| Central site and pending data   | Done        | Confirmed NAP/contact identifiers are centralized; unconfirmed business details, assets, hours, fees and approvals are typed as `null`.                                       |
+| Base layout and global styles   | Done        | Includes `en-GB`, skip link, main landmark, visible focus and reduced-motion handling.                                                                                        |
+| SEO and JSON-LD components      | Done        | Canonical, Open Graph/Twitter and conditional favicon metadata; optional schemas omit unknown fields.                                                                         |
+| Shared site components          | Done        | Top bar, responsive header/menu, footer, mobile actions, CTA/GP statement, breadcrumbs, FAQ/fees, consultation card and map facade. Unknown-dependent details remain omitted. |
+| Page implementation             | Not started | Next: replace the scaffold preview with the Home page, then implement the remaining routes in specification order.                                                            |
 
-Validation passed: `npm run check` (0 errors, warnings or hints), `npm run lint`, `npm run format:check`, `npm run build`, `npm run check:jsonld`, and `npm audit` (0 vulnerabilities). The built JSON-LD parses with two site-wide graph nodes and no placeholder or disallowed schema values. A built-output compliance scan found no banned copy or template placeholders; the temporary preview has one H1, `lang="en-GB"` and `noindex`.
+Validation passed: `npm run check` (0 errors, warnings or hints), `npm run lint`, `npm run format:check`, `npm run build`, `npm run check:jsonld`, and `npm audit` (0 vulnerabilities). Responsive browser checks at 360, 768, 1024 and 1440px found no horizontal overflow; the mobile menu toggles `aria-expanded` and closes with Escape. The built JSON-LD parses with two site-wide graph nodes and no placeholder or disallowed schema values. A built-output compliance scan found no banned copy or template placeholders; the temporary preview has one H1, `lang="en-GB"` and `noindex`.
 
 ## Client confirmations still needed
 
@@ -60,7 +61,7 @@ Validation passed: `npm run check` (0 errors, warnings or hints), `npm run lint`
 
 ## Next implementation steps
 
-1. Build shared navigation, contact, footer, CTA, practitioner and FAQ components.
-2. Implement the Home page and remaining pages in the specification's order.
+1. Implement the Home page using the completed shared components and approved content.
+2. Implement the remaining pages in the specification's order.
 3. Add booking/API, policy pages, consent-gated analytics, SEO files and QA/compliance tooling.
 4. Verify parity and acceptance requirements before removing the legacy folder; document client-dependent launch blockers rather than inventing facts.

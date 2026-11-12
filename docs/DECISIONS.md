@@ -14,6 +14,8 @@ Decisions are recorded here when they affect implementation. Client-dependent fa
 - **SEO assets:** Do not publish placeholder image, favicon, manifest, social-profile, map-profile or schema values. The current apex canonical is provisional until the preferred host is confirmed.
 - **Analytics and cookies:** Add no analytics or marketing scripts before the specified consent mechanism is implemented. Never send enquiry contents or personal data to analytics.
 - **Accessibility and compliance:** Keep page content in HTML, use semantic landmarks and keyboard-operable controls, and run copy compliance checks against built output before considering launch.
+- **Shared components:** `BaseLayout` provides the header, footer and mobile action bar site-wide. The mobile menu remains navigable without JavaScript and adds `aria-expanded`, Escape handling and focus containment when JavaScript is available. Use the permitted Bootstrap Icons package only for the specified mobile action icons; do not add Bootstrap JavaScript or other UI libraries.
+- **Unknown-dependent UI:** Omit fees, opening hours, email, social links, map links, photos and other client-dependent values while their central data remains `null`; do not render placeholder content.
 
 ## Pending client decisions
 

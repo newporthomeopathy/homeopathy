@@ -39,10 +39,18 @@ const currentPath = Astro.props.currentPath ?? Astro.url.pathname
       <div class="site-nav-panel" id="primary-navigation" data-nav-panel>
         <ul class="site-nav-list">
           <li>
-            <a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Home</a>
+            <a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>
+              Home
+            </a>
           </li>
           <li>
-            <details class="nav-dropdown" open={currentPath.startsWith('/homeopathy-') || currentPath.startsWith('/online-homeopathy-')}>
+            <details
+              class="nav-dropdown"
+              open={
+                currentPath.startsWith('/homeopathy-') ||
+                currentPath.startsWith('/online-homeopathy-')
+              }
+            >
               <summary>Consultations</summary>
               <ul>
                 <li>
@@ -56,7 +64,9 @@ const currentPath = Astro.props.currentPath ?? Astro.url.pathname
                 <li>
                   <a
                     href="/online-homeopathy-consultation/"
-                    aria-current={currentPath === '/online-homeopathy-consultation/' ? 'page' : undefined}
+                    aria-current={
+                      currentPath === '/online-homeopathy-consultation/' ? 'page' : undefined
+                    }
                   >
                     Online
                   </a>
@@ -114,7 +124,9 @@ const currentPath = Astro.props.currentPath ?? Astro.url.pathname
     menu.hidden = mobileViewport.matches
 
     const focusableItems = () =>
-      [...menu.querySelectorAll<HTMLElement>('a[href], button:not(:disabled), summary')]
+      [...menu.querySelectorAll<HTMLElement>('a[href], button:not(:disabled), summary')].filter(
+        (item) => item.getClientRects().length > 0,
+      )
 
     const setMenuOpen = (open: boolean, moveFocus = true) => {
       isOpen = open
