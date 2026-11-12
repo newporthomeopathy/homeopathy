@@ -1,0 +1,22 @@
+# Astro build output
+dist/
+.astro/
+.vercel/
+
+# Dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Local editor and OS files
+.DS_Store
+.idea/
