@@ -31,14 +31,15 @@ The homepage reflects most of the Phase 1 (Parts 1–3) changes, but is **not re
 
 ## Phase 2 scaffold
 
-| Item                            | Status      | Notes                                                                                                |
-| ------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------- |
-| Astro project at workspace root | Done        | Static output is explicit; the legacy site remains untouched.                                        |
-| TypeScript strict mode          | Done        | Uses Astro's strict tsconfig; the legacy folder is excluded from checks.                             |
-| Plain CSS and vendor baseline   | Done        | No CSS framework or UI library has been added to the rebuild.                                        |
-| Developer checks                | Done        | Build, Astro check, ESLint, Prettier and an `npm audit` run are configured/verified.                 |
-| Temporary root preview          | Done        | One-H1, `en-GB`, noindex scaffold page; replace it with approved homepage content before deployment. |
-| Data, components and pages      | Not started | Continue with `site.ts` and typed pending values, then shared layout/components and pages.           |
+| Item                            | Status      | Notes                                                                                                                                   |
+| ------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Astro project at workspace root | Done        | Static output is explicit; the legacy site remains untouched.                                                                           |
+| TypeScript strict mode          | Done        | Uses Astro's strict tsconfig; the legacy folder is excluded from checks.                                                                |
+| Plain CSS and vendor baseline   | Done        | No CSS framework or UI library has been added to the rebuild.                                                                           |
+| Developer checks                | Done        | Build, Astro check, ESLint, Prettier and an `npm audit` run are configured/verified.                                                    |
+| Temporary root preview          | Done        | One-H1, `en-GB`, noindex scaffold page; replace it with approved homepage content before deployment.                                    |
+| Central site and pending data   | Done        | Confirmed NAP/contact identifiers are centralized; unconfirmed business details, assets, hours, fees and approvals are typed as `null`. |
+| Layout, components and pages    | Not started | Next: implement the shared layout/SEO components, then pages in specification order.                                                    |
 
 Validation passed: `npm run check` (0 errors, warnings or hints), `npm run lint`, `npm run format:check`, `npm run build`, and `npm audit` (0 vulnerabilities). A built-output compliance scan found no banned copy or template placeholders; the temporary preview has one H1, `lang="en-GB"` and `noindex`.
 
@@ -57,7 +58,6 @@ Validation passed: `npm run check` (0 errors, warnings or hints), `npm run lint`
 
 ## Next implementation steps
 
-1. Add central site facts and typed pending client inputs; omit unknown values from rendered pages and structured data.
-2. Build the shared layout, metadata and reusable accessible components, then implement the pages in the specification's order.
-3. Add booking/API, policy pages, consent-gated analytics, SEO files and QA/compliance tooling.
-4. Verify parity and acceptance requirements before removing the legacy folder; document client-dependent launch blockers rather than inventing facts.
+1. Build the shared layout, metadata and reusable accessible components, then implement the pages in the specification's order.
+2. Add booking/API, policy pages, consent-gated analytics, SEO files and QA/compliance tooling.
+3. Verify parity and acceptance requirements before removing the legacy folder; document client-dependent launch blockers rather than inventing facts.
