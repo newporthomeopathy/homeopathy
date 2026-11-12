@@ -64,47 +64,8 @@
     let elementPos = select(el).offsetTop
     window.scrollTo({
       top: elementPos - offset,
-      behavior: 'smooth'
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
     })
-  }
-
-  /**
-   * Toggle .header-scrolled class to #header when page is scrolled
-   */
-  let selectHeader = select('#header')
-  let selectTopbar = select('#topbar')
-  if (selectHeader) {
-    const headerScrolled = () => {
-      if (window.scrollY > 100) {
-        selectHeader.classList.add('header-scrolled')
-        if (selectTopbar) {
-          selectTopbar.classList.add('topbar-scrolled')
-        }
-      } else {
-        selectHeader.classList.remove('header-scrolled')
-        if (selectTopbar) {
-          selectTopbar.classList.remove('topbar-scrolled')
-        }
-      }
-    }
-    window.addEventListener('load', headerScrolled)
-    onscroll(document, headerScrolled)
-  }
-
-  /**
-   * Back to top button
-   */
-  let backtotop = select('.back-to-top')
-  if (backtotop) {
-    const toggleBacktotop = () => {
-      if (window.scrollY > 100) {
-        backtotop.classList.add('active')
-      } else {
-        backtotop.classList.remove('active')
-      }
-    }
-    window.addEventListener('load', toggleBacktotop)
-    onscroll(document, toggleBacktotop)
   }
 
   /**
@@ -122,6 +83,10 @@
       icon.classList.toggle('bi-list', !isOpen)
       icon.classList.toggle('bi-x', isOpen)
     }
+    if (isOpen) {
+      const firstLink = mobileNav.querySelector('ul a[href]')
+      if (firstLink) firstLink.focus()
+    }
   }
 
   on('click', '.mobile-nav-toggle', function(e) {
@@ -129,14 +94,29 @@
   })
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && mobileNav && mobileNav.classList.contains('navbar-mobile')) {
+    if (!mobileNav || !mobileNav.classList.contains('navbar-mobile')) return
+    if (event.key === 'Escape') {
       setMobileNavOpen(false)
       mobileNavToggle.focus()
+      return
+    }
+    if (event.key !== 'Tab') return
+
+    const focusable = [...mobileNav.querySelectorAll('a[href], button:not([disabled])')]
+    if (!focusable.length) return
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault()
+      last.focus()
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      first.focus()
     }
   })
 
   /**
-   * Scrool with ofset on links with a class name .scrollto
+   * Scroll with offset on links with a class name .scrollto
    */
   on('click', '.scrollto', function(e) {
     if (select(this.hash)) {
